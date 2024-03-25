@@ -30,13 +30,13 @@ def unbond_address(uid):
     cur.execute(f'UPDATE Users SET address = "0x00" WHERE uid = {uid}')
     con.commit()
 
-def check_address(address):
-    cur.execute(f'SELECT * FROM Users WHERE address LIKE {address}')
+def check_address(wallet_address):
+    cur.execute(f'SELECT * FROM Users WHERE address = {wallet_address}')
     duplicated = cur.fetchone()
     if duplicated:
         return unbond_address(duplicated[0])
     return False
 
-def set_address(uid, address):
-    cur.execute(f'UPDATE Users SET address = {address} WHERE uid = {uid}')
+def set_address(uid, wallet_address):
+    cur.execute(f'UPDATE Users SET address = {wallet_address} WHERE uid = {uid}')
     con.commit()
