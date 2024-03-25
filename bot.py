@@ -60,6 +60,18 @@ async def connect_wallet(message: Message, wallet_name: str):
 
     if wallet is None:
         raise Exception(f'Unknown wallet: {wallet_name}')
+    
+    def status_changed(wallet_info):
+        print('wallet_info:', wallet_info)
+        if wallet_info is not None:
+            print('check_proof:', check_payload(proof_payload, wallet_info))
+
+        unsubscribe()
+
+    def status_error(e):
+        print('connect_error:', e)
+
+    unsubscribe = connector.on_status_change(status_changed, status_error)
 
     generated_url = await connector.connect(wallet, {
         'ton_proof': proof_payload
