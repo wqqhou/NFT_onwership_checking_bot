@@ -64,7 +64,15 @@ async def connect_wallet(message: Message, wallet_name: str):
     def status_changed(wallet_info):
         print('wallet_info:', wallet_info)
         if wallet_info is not None:
-            print('check_proof:', proof.check_payload(proof_payload, wallet_info))
+            if proof.check_payload(proof_payload, wallet_info):
+                db.set_address(message.chat.id, wallet_address)
+                message.answer(f'You are connected with address <code>{wallet_address}</code>', reply_markup=mk_b.as_markup())
+                logger.info(f'Connected with address: {wallet_address}')
+            else:
+                message.answer('Connection failed! try again!')
+                logger.error('Proof verification failed!')
+
+                
 
         unsubscribe()
 
@@ -96,9 +104,6 @@ async def connect_wallet(message: Message, wallet_name: str):
             if connector.account.address:
                 wallet_address = connector.account.address
                 wallet_address = Address(wallet_address).to_str(is_bounceable=False)
-                db.set_address(message.chat.id, wallet_address)
-                await message.answer(f'You are connected with address <code>{wallet_address}</code>', reply_markup=mk_b.as_markup())
-                logger.info(f'Connected with address: {wallet_address}')
             return
 
     await message.answer(f'Timeout error!', reply_markup=mk_b.as_markup())
