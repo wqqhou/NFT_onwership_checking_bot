@@ -43,4 +43,4 @@ def account_forms(raw_form, test_only=False):
         preaddr_b+calcCRC(preaddr_b)).decode('utf8')
     b64_u_us = base64.urlsafe_b64encode(
         preaddr_u+calcCRC(preaddr_u)).decode('utf8')
-    return b64_b_us
+    return b64_u_us
