@@ -12,7 +12,7 @@ cur.execute('''CREATE TABLE IF NOT EXISTS Users(
         )''')
 
 def add_user(uid):
-    cur.execute(f'INSERT INTO Users VALUES ({uid}, "0x00")')
+    cur.execute(f'INSERT INTO Users VALUES ({uid}, "0x123")')
     con.commit()
 
 def check_user(uid):
