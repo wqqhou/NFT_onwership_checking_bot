@@ -39,5 +39,5 @@ def check_address(wallet_address):
 
 def set_address(uid, wallet_address):
     check_address(wallet_address)
-    cur.execute(f'UPDATE Users SET addr = {wallet_address} WHERE uid = {uid}')
+    cur.execute(f'UPDATE Users SET addr = "{wallet_address}" WHERE uid = {uid}')
     con.commit()
