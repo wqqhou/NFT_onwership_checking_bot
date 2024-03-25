@@ -7,7 +7,7 @@ cur = con.cursor()
 
 # Create table "Subscription" with uid and balance rows
 cur.execute('''CREATE TABLE IF NOT EXISTS Users(
-                uid STRING
+                uid STRING,
                 address STRING
         )''')
 
