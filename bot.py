@@ -6,6 +6,7 @@ from io import BytesIO
 import qrcode
 import proof
 import requests
+import crypto
 
 import pytonconnect.exceptions
 from pytoniq_core import Address
@@ -20,6 +21,8 @@ from aiogram.filters import CommandStart, Command
 from aiogram.types import Message, CallbackQuery, BufferedInputFile
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 import db
+
+
 
 
 logger = logging.getLogger(__file__)
@@ -89,7 +92,7 @@ async def connect_wallet(message: Message, wallet_name: str):
                     nft_resp = requests.get(f'https://tonapi.io/v2/nfts/collections/{config.NFT_CONTRACT}/items?'
                                             f'api_key= "{config.API_KEY}"').json()
                     for items in nft_resp['nft_items']:
-                         if wallet_address == items['owner']['address']:
+                         if wallet_address == crypto.account_forms(items['owner']['address']):
                              db.set_address(message.chat.id, wallet_address)
                              await message.answer(f'You are connected with address <code>{wallet_address}</code>', reply_markup=mk_b.as_markup())
                              logger.info(f'Connected with address: {wallet_address}')
