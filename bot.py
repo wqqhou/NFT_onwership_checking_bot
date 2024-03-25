@@ -5,6 +5,7 @@ import time
 from io import BytesIO
 import qrcode
 import proof
+import requests
 
 import pytonconnect.exceptions
 from pytoniq_core import Address
@@ -85,9 +86,13 @@ async def connect_wallet(message: Message, wallet_name: str):
                 wallet_address = connector.account.address
                 wallet_address = Address(wallet_address).to_str(is_bounceable=False)
                 if proof.check_payload(proof_payload, connector.wallet):
-                    db.set_address(message.chat.id, wallet_address)
-                    await message.answer(f'You are connected with address <code>{wallet_address}</code>', reply_markup=mk_b.as_markup())
-                    logger.info(f'Connected with address: {wallet_address}')
+                    nft_resp = requests.get(f'https://tonapi.io/v2/nfts/collections/{config.NFT_CONTRACT}/items?'
+                                            f'api_key= "{config.API_KEY}"').json()
+                    for items in nft_resp['nft_items']:
+                         if wallet_address == items['owner']['address']:
+                             db.set_address(message.chat.id, wallet_address)
+                             await message.answer(f'You are connected with address <code>{wallet_address}</code>', reply_markup=mk_b.as_markup())
+                             logger.info(f'Connected with address: {wallet_address}')
                 else:
                     await message.answer(f'Proof error!', reply_markup=mk_b.as_markup())
             return
