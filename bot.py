@@ -4,6 +4,7 @@ import asyncio
 import time
 from io import BytesIO
 import qrcode
+import proof
 
 import pytonconnect.exceptions
 from pytoniq_core import Address
@@ -49,7 +50,7 @@ async def command_start_handler(message: Message):
 
 async def connect_wallet(message: Message, wallet_name: str):
     connector = get_connector(message.chat.id)
-
+    proof_payload = proof.generate_payload(600)
     wallets_list = connector.get_wallets()
     wallet = None
 
@@ -60,7 +61,9 @@ async def connect_wallet(message: Message, wallet_name: str):
     if wallet is None:
         raise Exception(f'Unknown wallet: {wallet_name}')
 
-    generated_url = await connector.connect(wallet)
+    generated_url = await connector.connect(wallet, {
+        'ton_proof': proof_payload
+    })
 
     mk_b = InlineKeyboardBuilder()
     mk_b.button(text='Connect', url=generated_url)
