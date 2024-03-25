@@ -81,6 +81,7 @@ async def connect_wallet(message: Message, wallet_name: str):
 
     mk_b = InlineKeyboardBuilder()
     mk_b.button(text='Start', callback_data='start')
+    owner = False
 
     for i in range(1, 180):
         await asyncio.sleep(1)
