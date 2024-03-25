@@ -11,33 +11,33 @@ cur.execute('''CREATE TABLE IF NOT EXISTS Users(
                 address STRING
         )''')
 
-def get_subscribers():
-    cur.execute(f'SELECT * FROM Subscription')
-    data = cur.fetchone()[0]
-    uid_list = eval(data)
-    if uid_list:
-        return uid_list
-    return False
-
 def add_user(uid):
     cur.execute(f'INSERT INTO Users VALUES ({uid}, "0x00")')
     con.commit()
 
-def check_subscriber(uid):
-    list = get_subscribers()
-    uid = str(uid)
-    if list:
-        if uid in list:
-            return True
+def check_user(uid):
+    cur.execute(f'SELECT * FROM Users WHERE uid = {uid}')
+    user = cur.fetchone()
+    if user:
+        return True
+    return add_user(uid)
+
+def remove_user(uid):
+    cur.execute(f'DELETE FROM Users WHERE uid = {uid}')
+    con.commit()
+
+def unbond_address(uid):
+    cur.execute(f'UPDATE Users SET address = "0x00" WHERE uid = {uid}')
+    con.commit()
+
+def check_address(address):
+    cur.execute(f'SELECT * FROM Users WHERE address = {address}')
+    duplicated = cur.fetchone()
+    if duplicated:
+        return unbond_address(duplicated[0])
     return False
 
-def remove_subscriber(uid):
-    list = get_subscribers()
-    uid = str(uid)
-    if list:
-        if uid in list:
-            list.remove(uid)
-            cur.execute(f'UPDATE Subscription SET uid = "{list}"')
-            con.commit()
-            return True
-    return False
+def set_address(uid, address):
+    check_address(address)
+    cur.execute(f'UPDATE Users SET address = {address} WHERE uid = {uid}')
+    con.commit()

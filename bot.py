@@ -17,6 +17,7 @@ from aiogram.enums import ParseMode
 from aiogram.filters import CommandStart, Command
 from aiogram.types import Message, CallbackQuery, BufferedInputFile
 from aiogram.utils.keyboard import InlineKeyboardBuilder
+import db
 
 
 logger = logging.getLogger(__file__)
@@ -30,6 +31,7 @@ async def command_start_handler(message: Message):
     chat_id = message.chat.id
     connector = get_connector(chat_id)
     connected = await connector.restore_connection()
+    db.check_user(chat_id)
 
     mk_b = InlineKeyboardBuilder()
     if connected:
@@ -79,6 +81,7 @@ async def connect_wallet(message: Message, wallet_name: str):
             if connector.account.address:
                 wallet_address = connector.account.address
                 wallet_address = Address(wallet_address).to_str(is_bounceable=False)
+                db.set_address(message.chat.id, wallet_address)
                 await message.answer(f'You are connected with address <code>{wallet_address}</code>', reply_markup=mk_b.as_markup())
                 logger.info(f'Connected with address: {wallet_address}')
             return
