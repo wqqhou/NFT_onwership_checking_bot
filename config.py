@@ -1,5 +1,3 @@
-BOT_TOKEN = ''
+BOT_TOKEN = '7129039228:AAG2_UWopUMdeiMCrGYBD7VFWsc8rPTq0F8'
 
-API_KEY = ''
-API_SECRET_KEY = ''
-API_PASSPHRASE = ''
+MANIFEST_URL = 'https://minter.theopenpass.io/tocconnect-manifest.json'

@@ -6,8 +6,9 @@ con = sqlite3.connect('db.sqlite')
 cur = con.cursor()
 
 # Create table "Subscription" with uid and balance rows
-cur.execute('''CREATE TABLE IF NOT EXISTS Subscription(
+cur.execute('''CREATE TABLE IF NOT EXISTS Users(
                 uid STRING
+                address STRING
         )''')
 
 def get_subscribers():
@@ -18,11 +19,8 @@ def get_subscribers():
         return uid_list
     return False
 
-def add_subscriber(uid):
-    list = get_subscribers()
-    list.append(str(uid))
-    list = str(list)
-    cur.execute(f'UPDATE Subscription SET uid = "{list}"')
+def add_user(uid):
+    cur.execute(f'INSERT INTO Users VALUES ({uid}, "0x00")')
     con.commit()
 
 def check_subscriber(uid):
