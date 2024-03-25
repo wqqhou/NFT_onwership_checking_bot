@@ -31,7 +31,7 @@ def unbond_address(uid):
     con.commit()
 
 def check_address(address):
-    cur.execute(f'SELECT * FROM Users WHERE address = {address}')
+    cur.execute(f'SELECT * FROM Users WHERE address LIKE {address}')
     duplicated = cur.fetchone()
     if duplicated:
         return unbond_address(duplicated[0])
