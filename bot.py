@@ -96,6 +96,9 @@ async def connect_wallet(message: Message, wallet_name: str):
                              db.set_address(message.chat.id, wallet_address)
                              await message.answer(f'You are connected with address <code>{wallet_address}</code>', reply_markup=mk_b.as_markup())
                              logger.info(f'Connected with address: {wallet_address}')
+                             owner = True
+                    if not owner:
+                        await message.answer(f'The address <code>{wallet_address}</code> does not possess any required NFT.', reply_markup=mk_b.as_markup())
                 else:
                     await message.answer(f'Proof error!', reply_markup=mk_b.as_markup())
             return
