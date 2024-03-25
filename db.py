@@ -8,7 +8,7 @@ cur = con.cursor()
 # Create table "Subscription" with uid and balance rows
 cur.execute('''CREATE TABLE IF NOT EXISTS Users(
                 uid STRING,
-                address STRING
+                addr STRING
         )''')
 
 def add_user(uid):
@@ -27,16 +27,16 @@ def remove_user(uid):
     con.commit()
 
 def unbond_address(uid):
-    cur.execute(f'UPDATE Users SET address = "0x00" WHERE uid = {uid}')
+    cur.execute(f'UPDATE Users SET addr = "0x00" WHERE uid = {uid}')
     con.commit()
 
 def check_address(wallet_address):
-    cur.execute(f'SELECT * FROM Users WHERE address = {wallet_address}')
+    cur.execute(f'SELECT * FROM Users WHERE addr = {wallet_address}')
     duplicated = cur.fetchone()
     if duplicated:
         return unbond_address(duplicated[0])
     return False
 
 def set_address(uid, wallet_address):
-    cur.execute(f'UPDATE Users SET address = {wallet_address} WHERE uid = {uid}')
+    cur.execute(f'UPDATE Users SET addr = {wallet_address} WHERE uid = {uid}')
     con.commit()
