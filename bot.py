@@ -60,26 +60,6 @@ async def connect_wallet(message: Message, wallet_name: str):
 
     if wallet is None:
         raise Exception(f'Unknown wallet: {wallet_name}')
-    
-    def status_changed(wallet_info):
-        print('wallet_info:', wallet_info)
-        if wallet_info is not None:
-            if proof.check_payload(proof_payload, wallet_info):
-                db.set_address(message.chat.id, wallet_address)
-                message.answer(f'You are connected with address <code>{wallet_address}</code>', reply_markup=mk_b.as_markup())
-                logger.info(f'Connected with address: {wallet_address}')
-            else:
-                message.answer('Connection failed! try again!')
-                logger.error('Proof verification failed!')
-
-                
-
-        unsubscribe()
-
-    def status_error(e):
-        print('connect_error:', e)
-
-    unsubscribe = connector.on_status_change(status_changed, status_error)
 
     generated_url = await connector.connect(wallet, {
         'ton_proof': proof_payload
@@ -104,6 +84,10 @@ async def connect_wallet(message: Message, wallet_name: str):
             if connector.account.address:
                 wallet_address = connector.account.address
                 wallet_address = Address(wallet_address).to_str(is_bounceable=False)
+                print(proof.check_payload(proof_payload, connector.wallet))
+                db.set_address(message.chat.id, wallet_address)
+                await message.answer(f'You are connected with address <code>{wallet_address}</code>', reply_markup=mk_b.as_markup())
+                logger.info(f'Connected with address: {wallet_address}')
             return
 
     await message.answer(f'Timeout error!', reply_markup=mk_b.as_markup())
