@@ -64,7 +64,7 @@ async def connect_wallet(message: Message, wallet_name: str):
     def status_changed(wallet_info):
         print('wallet_info:', wallet_info)
         if wallet_info is not None:
-            print('check_proof:', check_payload(proof_payload, wallet_info))
+            print('check_proof:', proof.check_payload(proof_payload, wallet_info))
 
         unsubscribe()
 
