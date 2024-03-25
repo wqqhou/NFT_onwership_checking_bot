@@ -84,10 +84,12 @@ async def connect_wallet(message: Message, wallet_name: str):
             if connector.account.address:
                 wallet_address = connector.account.address
                 wallet_address = Address(wallet_address).to_str(is_bounceable=False)
-                print(proof.check_payload(proof_payload, connector.wallet))
-                db.set_address(message.chat.id, wallet_address)
-                await message.answer(f'You are connected with address <code>{wallet_address}</code>', reply_markup=mk_b.as_markup())
-                logger.info(f'Connected with address: {wallet_address}')
+                if proof.check_payload(proof_payload, connector.wallet):
+                    db.set_address(message.chat.id, wallet_address)
+                    await message.answer(f'You are connected with address <code>{wallet_address}</code>', reply_markup=mk_b.as_markup())
+                    logger.info(f'Connected with address: {wallet_address}')
+                else:
+                    await message.answer(f'Proof error!', reply_markup=mk_b.as_markup())
             return
 
     await message.answer(f'Timeout error!', reply_markup=mk_b.as_markup())
