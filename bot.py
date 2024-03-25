@@ -10,7 +10,6 @@ from pytoniq_core import Address
 from pytonconnect import TonConnect
 
 import config
-from messages import get_comment_message
 from connector import get_connector
 
 from aiogram import Bot, Dispatcher, F
@@ -23,7 +22,7 @@ from aiogram.utils.keyboard import InlineKeyboardBuilder
 logger = logging.getLogger(__file__)
 
 dp = Dispatcher()
-bot = Bot(config.TOKEN, parse_mode=ParseMode.HTML)
+bot = Bot(config.BOT_TOKEN, parse_mode=ParseMode.HTML)
 
 
 @dp.message(CommandStart())
@@ -34,7 +33,6 @@ async def command_start_handler(message: Message):
 
     mk_b = InlineKeyboardBuilder()
     if connected:
-        mk_b.button(text='Send Transaction', callback_data='send_tr')
         mk_b.button(text='Disconnect', callback_data='disconnect')
         await message.answer(text='You are already connected!', reply_markup=mk_b.as_markup())
 
@@ -45,37 +43,6 @@ async def command_start_handler(message: Message):
         mk_b.adjust(1, )
         await message.answer(text='Choose wallet to connect', reply_markup=mk_b.as_markup())
 
-
-@dp.message(Command('transaction'))
-async def send_transaction(message: Message):
-    connector = get_connector(message.chat.id)
-    connected = await connector.restore_connection()
-    if not connected:
-        await message.answer('Connect wallet first!')
-        return
-
-    transaction = {
-        'valid_until': int(time.time() + 3600),
-        'messages': [
-            get_comment_message(
-                destination_address='0:0000000000000000000000000000000000000000000000000000000000000000',
-                amount=int(0.01 * 10 ** 9),
-                comment='hello world!'
-            )
-        ]
-    }
-
-    await message.answer(text='Approve transaction in your wallet app!')
-    try:
-        await asyncio.wait_for(connector.send_transaction(
-            transaction=transaction
-        ), 300)
-    except asyncio.TimeoutError:
-        await message.answer(text='Timeout error!')
-    except pytonconnect.exceptions.UserRejectsError:
-        await message.answer(text='You rejected the transaction!')
-    except Exception as e:
-        await message.answer(text=f'Unknown error: {e}')
 
 
 async def connect_wallet(message: Message, wallet_name: str):
@@ -133,8 +100,6 @@ async def main_callback_handler(call: CallbackQuery):
     data = call.data
     if data == "start":
         await command_start_handler(message)
-    elif data == "send_tr":
-        await send_transaction(message)
     elif data == 'disconnect':
         await disconnect_wallet(message)
     else:
