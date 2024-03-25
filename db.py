@@ -38,6 +38,5 @@ def check_address(address):
     return False
 
 def set_address(uid, address):
-    check_address(address)
     cur.execute(f'UPDATE Users SET address = {address} WHERE uid = {uid}')
     con.commit()

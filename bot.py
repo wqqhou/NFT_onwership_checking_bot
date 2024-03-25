@@ -81,6 +81,7 @@ async def connect_wallet(message: Message, wallet_name: str):
             if connector.account.address:
                 wallet_address = connector.account.address
                 wallet_address = Address(wallet_address).to_str(is_bounceable=False)
+                db.check_address(wallet_address)
                 db.set_address(message.chat.id, wallet_address)
                 await message.answer(f'You are connected with address <code>{wallet_address}</code>', reply_markup=mk_b.as_markup())
                 logger.info(f'Connected with address: {wallet_address}')
