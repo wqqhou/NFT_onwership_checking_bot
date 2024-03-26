@@ -28,7 +28,7 @@ def get_addresses():
 
 def find_user(wallet_address):
     cur.execute(f'SELECT uid FROM Users WHERE addr = "{wallet_address}"')
-    return cur.fetchone()
+    return cur.fetchone()[0]
 
 def unbond_address(uid):
     cur.execute(f'UPDATE Users SET addr = "0x00" WHERE uid = {uid}')
