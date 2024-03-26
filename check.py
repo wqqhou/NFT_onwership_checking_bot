@@ -11,7 +11,7 @@ while True:
                                 f'api_key= "{config.API_KEY}"').json()
     except: 
         continue
-    users = db.get_addresses()
+    users = eval(db.get_addresses())
     for wallet_address in users:
         print(wallet_address)
         ownership = False
