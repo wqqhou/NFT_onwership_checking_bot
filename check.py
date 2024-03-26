@@ -5,7 +5,7 @@ import crypto
 import time
 
 while True:
-    time.sleep(20)
+    time.sleep(10)
     try:
         nft_resp = requests.get(f'https://tonapi.io/v2/nfts/collections/{config.NFT_CONTRACT}/items?'
                                 f'api_key= "{config.API_KEY}"').json()
@@ -18,7 +18,7 @@ while True:
             if wallet_address == crypto.account_forms(items['owner']['address']):
                 ownership = True
                 break
-            if not ownership:
-                uid = db.find_user(wallet_address)
-                print(f'{uid} does not have the nft') 
+        if not ownership:
+            uid = db.find_user(wallet_address)
+            print(f'{uid} does not have the nft') 
         
