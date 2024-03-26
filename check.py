@@ -13,6 +13,7 @@ while True:
         continue
     users = db.get_addresses()
     for wallet_address in users:
+        print(wallet_address)
         ownership = False
         for items in nft_resp['nft_items']:
             if wallet_address == crypto.account_forms(items['owner']['address']):
