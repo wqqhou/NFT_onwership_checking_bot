@@ -6,7 +6,7 @@ import asyncio
 
 async def start():
     while True:
-        asyncio.sleep(5)
+        await asyncio.sleep(5)
         try:
             nft_resp = requests.get(f'https://tonapi.io/v2/nfts/collections/{config.NFT_CONTRACT}/items?'
                                     f'api_key= "{config.API_KEY}"').json()

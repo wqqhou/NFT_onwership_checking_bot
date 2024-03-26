@@ -130,8 +130,9 @@ async def main_callback_handler(call: CallbackQuery):
 
 async def main() -> None:
     await bot.delete_webhook(drop_pending_updates=True)  # skip_updates = True
-    await dp.start_polling(bot)
     await asyncio.create_task(check.start())
+    await dp.start_polling(bot)
+    
 
 
 
