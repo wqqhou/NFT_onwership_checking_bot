@@ -21,7 +21,7 @@ from aiogram.enums import ParseMode
 from aiogram.filters import CommandStart, Command
 from aiogram.types import Message, CallbackQuery, BufferedInputFile
 from aiogram.utils.keyboard import InlineKeyboardBuilder
-from aiogram.utils import executor
+
 import db
 
 logger = logging.getLogger(__file__)
@@ -135,6 +135,5 @@ async def main() -> None:
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO, stream=sys.stdout)
-    ex = executor.Executor(dp)
-    ex.loop.create_task(check.start())
+    asyncio.run(check.start())
     asyncio.run(main())
