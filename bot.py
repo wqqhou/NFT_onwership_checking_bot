@@ -44,12 +44,11 @@ async def command_start_handler(message: Message):
 
     else:
         mk_b.button(text='Request to Join', url=config.GROUP_LINK)
-        await message.answer(text='Plase request to join before connecting your wallet.', reply_markup=mk_b.as_markup())
         wallets_list = TonConnect.get_wallets()
         for wallet in wallets_list:
             mk_b.button(text=wallet['name'], callback_data=f'connect:{wallet["name"]}')
         mk_b.adjust(1, )
-        await message.answer(text='Choose wallet to connect', reply_markup=mk_b.as_markup())
+        await message.answer(text='Plase request to join first, and then choose a wallet to connect', reply_markup=mk_b.as_markup())
 
         
 
@@ -106,7 +105,7 @@ async def connect_wallet(message: Message, wallet_name: str):
                              except:
                                  mk_b = InlineKeyboardBuilder()
                                  mk_b.button(text='Request to Join', url=config.GROUP_LINK) 
-                                 await message.answer(f'Either you are already in the chat, or you have not sent the join request. Please send the request and try again.')           
+                                 await message.answer(f'Either you are already in the chat, or you have not sent the join request. Please send the request and try again.', reply_markup=mk_b.as_markup())           
                     if not owner:
                         await message.answer(f'The address <code>{wallet_address}</code> does not possess any required NFT.', reply_markup=mk_b.as_markup())
                 else:
