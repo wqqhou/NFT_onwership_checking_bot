@@ -11,9 +11,9 @@ while True:
                                 f'api_key= "{config.API_KEY}"').json()
     except: 
         continue
-    users = eval(db.get_addresses())
+    users = db.get_addresses()
+    print(type(users))
     for wallet_address in users:
-        print(wallet_address)
         ownership = False
         for items in nft_resp['nft_items']:
             if wallet_address == crypto.account_forms(items['owner']['address']):
