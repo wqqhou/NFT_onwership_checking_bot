@@ -5,7 +5,7 @@ import crypto
 import time
 
 while True:
-    time.sleep(10)
+    time.sleep(5)
     try:
         nft_resp = requests.get(f'https://tonapi.io/v2/nfts/collections/{config.NFT_CONTRACT}/items?'
                                 f'api_key= "{config.API_KEY}"').json()
