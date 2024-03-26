@@ -27,7 +27,7 @@ def get_addresses():
     return cur.fetchall()
 
 def find_user(wallet_address):
-    cur.execute(f'SELECT uid FROM Users WHERE addr = {wallet_address}')
+    cur.execute(f'SELECT uid FROM Users WHERE addr = "{wallet_address}"')
     con.commit()
 
 def unbond_address(uid):
