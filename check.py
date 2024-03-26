@@ -27,6 +27,9 @@ async def start():
                     break
             if not ownership:
                 uid = db.find_user(wallet_address[0])[0][0]
-                await bot.ban_chat_member(chat_id=config.CHAT_ID, user_id=uid)
+                try:
+                    await bot.ban_chat_member(chat_id=config.CHAT_ID, user_id=uid)
+                except: 
+                    pass
                 print(f'{uid} does not have the nft') 
         
