@@ -130,7 +130,8 @@ async def main_callback_handler(call: CallbackQuery):
 
 async def main() -> None:
     await bot.delete_webhook(drop_pending_updates=True)  # skip_updates = True
-    await dp.start_polling(bot, check.start())
+    await dp.start_polling(bot)
+    await dp.start_polling(check.start())
 
 
 if __name__ == "__main__":
