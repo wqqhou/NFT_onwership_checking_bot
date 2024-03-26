@@ -6,7 +6,7 @@ from io import BytesIO
 import qrcode
 import proof
 import requests
-import ton
+import check
 import crypto
 
 import pytonconnect.exceptions
@@ -136,5 +136,5 @@ async def main() -> None:
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO, stream=sys.stdout)
     ex = executor.Executor(dp)
-    ex.loop.create_task(ton.start())
+    ex.loop.create_task(check.start())
     asyncio.run(main())
