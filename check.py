@@ -19,6 +19,6 @@ while True:
                 ownership = True
                 break
         if not ownership:
-            uid = db.find_user(wallet_address[0])
+            uid = db.find_user(wallet_address[0])[0][0]
             print(f'{uid} does not have the nft') 
         
