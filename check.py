@@ -2,25 +2,23 @@ import requests
 import config
 import db
 import crypto
-import asyncio
+import time
 
-async def start():
-    while True:
-        await asyncio.sleep(20)
-        try:
-            nft_resp = requests.get(f'https://tonapi.io/v2/nfts/collections/{config.NFT_CONTRACT}/items?'
-                                    f'api_key= "{config.API_KEY}"').json()
-        except: 
-            continue
-        users = db.get_addresses()
-        for wallet_address in users:
-            ownership = False
-            for items in nft_resp['nft_items']:
-                if wallet_address == crypto.account_forms(items['owner']['address']):
-                    ownership = True
-                    break
-                if not ownership:
-                    uid = db.find_user(wallet_address)
-                    print(f'{uid} does not have the nft') 
+while True:
+    time.sleep(20)
+    try:
+        nft_resp = requests.get(f'https://tonapi.io/v2/nfts/collections/{config.NFT_CONTRACT}/items?'
+                                f'api_key= "{config.API_KEY}"').json()
+    except: 
+        continue
+    users = db.get_addresses()
+    for wallet_address in users:
+        ownership = False
+        for items in nft_resp['nft_items']:
+            if wallet_address == crypto.account_forms(items['owner']['address']):
+                ownership = True
+                break
+            if not ownership:
+                uid = db.find_user(wallet_address)
+                print(f'{uid} does not have the nft') 
         
-    
