@@ -79,7 +79,7 @@ async def connect_wallet(message: Message, wallet_name: str):
     await message.answer_photo(photo=file, caption='Connect wallet within 3 minutes', reply_markup=mk_b.as_markup())
 
     mk_b = InlineKeyboardBuilder()
-    mk_b.button(text='Start', callback_data='start')
+    mk_b.button(text='Disconnect', callback_data='disconnect')
     owner = False
 
     for i in range(1, 180):
@@ -93,6 +93,7 @@ async def connect_wallet(message: Message, wallet_name: str):
                                             f'api_key= "{config.API_KEY}"').json()
                     for items in nft_resp['nft_items']:
                          if wallet_address == crypto.account_forms(items['owner']['address']):
+
                              db.set_address(message.chat.id, wallet_address)
                              await message.answer(f'You are connected with address <code>{wallet_address}</code>', reply_markup=mk_b.as_markup())
                              logger.info(f'Connected with address: {wallet_address}')
@@ -103,7 +104,8 @@ async def connect_wallet(message: Message, wallet_name: str):
                 else:
                     await message.answer(f'Proof error!', reply_markup=mk_b.as_markup())
             return
-
+    mk_b = InlineKeyboardBuilder()
+    mk_b.button(text='Start', callback_data='start')
     await message.answer(f'Timeout error!', reply_markup=mk_b.as_markup())
 
 
