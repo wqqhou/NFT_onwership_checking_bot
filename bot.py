@@ -97,6 +97,7 @@ async def connect_wallet(message: Message, wallet_name: str):
                              await message.answer(f'You are connected with address <code>{wallet_address}</code>', reply_markup=mk_b.as_markup())
                              logger.info(f'Connected with address: {wallet_address}')
                              owner = True
+                             await bot.approve_chat_join_request(config.CHAT_ID, message.chat.id)
                     if not owner:
                         await message.answer(f'The address <code>{wallet_address}</code> does not possess any required NFT.', reply_markup=mk_b.as_markup())
                 else:
@@ -108,9 +109,11 @@ async def connect_wallet(message: Message, wallet_name: str):
 
 async def disconnect_wallet(message: Message):
     connector = get_connector(message.chat.id)
+    mk_b = InlineKeyboardBuilder()
+    mk_b.button(text='Connect', url=generated_url)
     await connector.restore_connection()
     await connector.disconnect()
-    await message.answer('You have been successfully disconnected!')
+    await message.answer('You have been successfully disconnected!', reply_markup=mk_b.as_markup())
 
 
 @dp.callback_query(lambda call: True)
@@ -133,7 +136,6 @@ async def main() -> None:
     await asyncio.create_task(check.start())
     await dp.start_polling(bot)
     
-
 
 
 if __name__ == "__main__":
