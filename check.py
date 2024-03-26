@@ -10,7 +10,7 @@ bot = Bot(token=config.BOT_TOKEN)
 
 async def start():
     while True:
-        await asyncio.sleep(5)
+        await asyncio.sleep(900)
         try:
             nft_resp = requests.get(f'https://tonapi.io/v2/nfts/collections/{config.NFT_CONTRACT}/items?'
                                     f'api_key= "{config.API_KEY}"').json()
@@ -31,5 +31,4 @@ async def start():
                     await bot.ban_chat_member(chat_id=config.CHAT_ID, user_id=uid)
                 except: 
                     pass
-                print(f'{uid} does not have the nft') 
         
