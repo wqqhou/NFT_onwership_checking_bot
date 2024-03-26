@@ -136,7 +136,7 @@ async def main() -> None:
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO, stream=sys.stdout)
-    task = asyncio.create_task(check.start())
+    asyncio.create_task(check.start())
     asyncio.run(main())
     
     

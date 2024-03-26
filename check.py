@@ -10,6 +10,8 @@ async def start():
         try:
             nft_resp = requests.get(f'https://tonapi.io/v2/nfts/collections/{config.NFT_CONTRACT}/items?'
                                     f'api_key= "{config.API_KEY}"').json()
+            if not nft_resp['nft_items']:
+                continue
         except: 
             continue
         users = db.get_addresses()
