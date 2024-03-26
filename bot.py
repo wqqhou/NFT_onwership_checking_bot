@@ -1,7 +1,6 @@
 import sys
 import logging
 import asyncio
-import time
 from io import BytesIO
 import qrcode
 import proof
@@ -9,7 +8,6 @@ import requests
 import check
 import crypto
 
-import pytonconnect.exceptions
 from pytoniq_core import Address
 from pytonconnect import TonConnect
 
