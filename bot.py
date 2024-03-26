@@ -22,9 +22,6 @@ from aiogram.types import Message, CallbackQuery, BufferedInputFile
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 import db
 
-
-
-
 logger = logging.getLogger(__file__)
 
 dp = Dispatcher()
