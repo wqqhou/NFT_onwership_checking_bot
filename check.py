@@ -20,6 +20,7 @@ async def start():
                     ownership = True
                     break
                 if not ownership:
-                    print('user does not have the nft') 
+                    uid = db.find_user(wallet_address)
+                    print(f'{uid} does not have the nft') 
         
     
