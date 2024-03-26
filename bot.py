@@ -110,7 +110,7 @@ async def connect_wallet(message: Message, wallet_name: str):
 async def disconnect_wallet(message: Message):
     connector = get_connector(message.chat.id)
     mk_b = InlineKeyboardBuilder()
-    mk_b.button(text='Connect', url=generated_url)
+    mk_b.button(text='Start', callback_data='start')
     await connector.restore_connection()
     await connector.disconnect()
     await message.answer('You have been successfully disconnected!', reply_markup=mk_b.as_markup())
