@@ -101,7 +101,8 @@ async def connect_wallet(message: Message, wallet_name: str):
                              owner = True
                              try:
                                  await bot.approve_chat_join_request(config.CHAT_ID, message.chat.id)
-                             except:
+                             except Exception as e:
+                                 print(e)
                                  mk_b = InlineKeyboardBuilder()
                                  mk_b.button(text='Request to Join', url=config.GROUP_LINK) 
                                  await message.answer(f'Either you are already in the chat, or you have not sent the join request. Please send the request and try again.', reply_markup=mk_b.as_markup())           
