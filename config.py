@@ -1,6 +1,6 @@
-BOT_TOKEN = '7129039228:AAG2_UWopUMdeiMCrGYBD7VFWsc8rPTq0F8'
+BOT_TOKEN = '6799865143:AAEbHBByu0TB9bjf3RpsJwKxhi0OCV8yykw'
 API_KEY = 'AF2QKHKI6GANNYYAAAAK4PW42CMYWHIBHKIUXA7G7VHITDQUKC7DJFKIOPPD5JDSBL3I7IQ'
-MANIFEST_URL = 'https://minter.theopenpass.io/tonconnect-manifest.json'
+MANIFEST_URL = 'https://minter.theopenpass.io/bot/0/tonconnect-manifest.json'
 NFT_CONTRACT = 'EQBOWos8X1kWmzu1ds7FNYUxyZJckY8au99sKV8vMpOinHqs'
 GROUP_LINK = 'https://t.me/+klzxnymrRwkzNTFl'
 CHAT_ID = '-4194185469'
