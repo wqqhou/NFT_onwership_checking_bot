@@ -28,7 +28,7 @@ async def start():
             if not ownership:
                 uid = db.find_user(wallet_address[0])[0][0]
                 try:
-                    await bot.ban_chat_member(chat_id=config.CHAT_ID, user_id=uid)
+                    await bot.unban_chat_member(chat_id=config.CHAT_ID, user_id=uid)
                 except: 
                     pass
         
