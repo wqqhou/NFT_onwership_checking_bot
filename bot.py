@@ -133,7 +133,13 @@ async def main_callback_handler(call: CallbackQuery):
     if data == "start":
         await command_start_handler(message)
     elif data == 'disconnect':
-        await disconnect_wallet(message)
+        try:
+            await disconnect_wallet(message)
+        except Exception as e:
+            print(e)
+            mk_b = InlineKeyboardBuilder()
+            mk_b.button(text='Start', callback_data='start')
+            await message.answer('You are not connected to any wallet.', reply_markup=mk_b.as_markup())
     else:
         data = data.split(':')
         if data[0] == 'connect':
