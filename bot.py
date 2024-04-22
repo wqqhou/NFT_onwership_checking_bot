@@ -90,24 +90,27 @@ async def connect_wallet(message: Message, wallet_name: str):
                 wallet_address = connector.account.address
                 wallet_address = Address(wallet_address).to_str(is_bounceable=False)
                 if proof.check_payload(proof_payload, connector.wallet):
-                    nft_resp = requests.get(f'https://tonapi.io/v2/nfts/collections/{config.NFT_CONTRACT}/items?'
-                                            f'api_key= "{config.API_KEY}"').json()
-                    for items in nft_resp['nft_items']:
-                         if wallet_address == crypto.account_forms(items['owner']['address']):
+                    try:
+                        nft_resp = requests.get(f'https://tonapi.io/v2/nfts/collections/{config.NFT_CONTRACT}/items?'
+                                                f'api_key= "{config.API_KEY}"').json()
+                        for items in nft_resp['nft_items']:
+                            if wallet_address == crypto.account_forms(items['owner']['address']):
 
-                             db.set_address(message.chat.id, wallet_address)
-                             await message.answer(f'You are connected with address <code>{wallet_address}</code>', reply_markup=mk_b.as_markup())
-                             logger.info(f'Connected with address: {wallet_address}')
-                             owner = True
-                             try:
-                                 await bot.approve_chat_join_request(config.CHAT_ID, message.chat.id)
-                             except Exception as e:
-                                 print(e)
-                                 mk_b = InlineKeyboardBuilder()
-                                 mk_b.button(text='Request to Join', url=config.GROUP_LINK) 
-                                 await message.answer(f'Either you are already in the chat, or you have not sent the join request. Please send the request and try again.', reply_markup=mk_b.as_markup())           
-                    if not owner:
-                        await message.answer(f'The address <code>{wallet_address}</code> does not possess any required NFT.', reply_markup=mk_b.as_markup())
+                                db.set_address(message.chat.id, wallet_address)
+                                await message.answer(f'You are connected with address <code>{wallet_address}</code>', reply_markup=mk_b.as_markup())
+                                logger.info(f'Connected with address: {wallet_address}')
+                                owner = True
+                                try:
+                                    await bot.approve_chat_join_request(config.CHAT_ID, message.chat.id)
+                                except Exception as e:
+                                    print(e)
+                                    mk_b = InlineKeyboardBuilder()
+                                    mk_b.button(text='Request to Join', url=config.GROUP_LINK) 
+                                    await message.answer(f'Either you are already in the chat, or you have not sent the join request. Please send the request and try again.', reply_markup=mk_b.as_markup())           
+                        if not owner:
+                            await message.answer(f'The address <code>{wallet_address}</code> does not possess any required NFT.', reply_markup=mk_b.as_markup())
+                    except:
+                        await message.answer(f'Error while checking NFT ownership.', reply_markup=mk_b.as_markup())            
                 else:
                     await message.answer(f'Proof error!', reply_markup=mk_b.as_markup())
             return
